@@ -1,5 +1,5 @@
 # Predicting the United States' foreign aid allocation patterns 
-Kevin Nguyen
+Kevin Minh Nguyen, M.S. in Applied Mathematics, University of Colorado-Boulder
 
 Project website: https://nguyenkm.com/projects/ml-intro/
 
