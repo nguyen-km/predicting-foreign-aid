@@ -6,7 +6,7 @@ from sklearn.metrics import silhouette_samples
 
 #Load data
 path = 'final_clean_data.csv'
-df = pd.read_csv('path', 
+df = pd.read_csv(path, 
                 index_col=0)
 df.head()
 
