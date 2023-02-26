@@ -5,7 +5,7 @@ library(arules)
 library(arulesViz)
 
 #Qualitiative data for association rules
-setwd('/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project/association_rule_learning/data')
+setwd('data')
 
 path_politics = 'DPI2020.csv'
 politics_old = read_csv(path_politics, na = c("", "NA", -999,0))
