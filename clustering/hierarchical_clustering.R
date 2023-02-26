@@ -1,4 +1,4 @@
-setwd('/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project/data/')
+
 path = 'final_clean_data.csv'
 
 df = readr::read_csv(path,col_select=-1)
