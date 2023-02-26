@@ -5,7 +5,7 @@ df = readr::read_csv(path,col_select=-1)
 head(df)
 
 df_num = dplyr::select_if(df, is.numeric)# only select numeric data
-df_num_scaled = scale(df_num) # normalize the 
+df_num_scaled = scale(df_num) # normalize the data
 rownames(df_num_scaled) = df$ISO3 # Keep country names
 
 
