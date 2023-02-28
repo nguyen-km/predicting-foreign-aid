@@ -3,10 +3,11 @@ from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import silhouette_samples
+from sklearn.decomposition import PCA
+import seaborn as sns
 
 #Load data
-path = 'final_clean_data.csv'
-df = pd.read_csv(path, 
+df = pd.read_csv('/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project/data/final_clean_data.csv', 
                 index_col=0)
 df.head()
 
@@ -25,6 +26,7 @@ for k in range(1, n+1):
 plt.plot(range(1,n+1), inertia, marker='o')
 plt.xlabel('Number of clusters')
 plt.ylabel('Inertia')
+plt.title("Elbow Method")
 plt.show()
 
 k_opt = 3 # select optimal k at the 'elbow'
@@ -54,4 +56,20 @@ plt.axvline(silhouette_avg, color="red",linestyle="--") # plot mean silhouette v
 plt.yticks(yticks, cluster_labels + 1)
 plt.ylabel('Cluster')
 plt.xlabel('Silhouette coefficient')
+plt.show()
+
+# K-means PCA (for plotting)
+
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+
+df_pca = pd.DataFrame(data = X_pca
+             , columns = ['principal component 1', 'principal component 2'])
+df_pca['cluster'] = y_pred + 1
+
+df_pca.head()
+
+sns.scatterplot(data=df_pca, x='principal component 1', y = 'principal component 2', hue = 'cluster', 
+                palette=['blue', 'red', 'green'])
+plt.title("Cluster plot")
 plt.show()
