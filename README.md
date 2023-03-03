@@ -14,7 +14,7 @@ International development involves not only financial aid but also human and soc
 - [Clustering](https://github.com/nguyen-km/ml-project/tree/main/clustering) (K-Means and Hierarchical)
 - [Association Rule Learning](https://github.com/nguyen-km/ml-project/tree/main/association_rule_learning)
 - Naive Bayes
-- Decision Trees
+- [Decision Trees](https://github.com/nguyen-km/ml-project/tree/main/decision_trees)
 - Regression
 - Support Vector Machines
 - Artificial Neural Networks
