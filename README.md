@@ -9,8 +9,8 @@ Since the end of World War II, one of the primary goals of the global community 
 In the post-war era, the global community prioritized two methods of international development: foreign direct investment (FDI) and foreign aid. FDI is foreign investment in local economies by private actors. Corporate involvement in developing countries can stimulate economic growth and bring jobs to underemployed areas. While FDI allows businesses to participate in international development, contemporary research debates whether the net effect of FDI is positive or negative for developing countries. Some see globalization as a means to exploit developing countries while cutting costs and subverting high wages/labor laws in the global north. A much less controversial tool for international development is foreign aid. Money is sent from wealthy governments and individuals to developing countries and non-governmental/inter-governmental organizations for humanitarian and economic aid and development in the Global South. Ali and Isse (2006) found that GDP, trade, private credit, and government consumption were among the significant determinates of foreign aid allocation. This line of research can assist developing countries in prioritizing improvement in specific areas such as education and health care to stimulate foreign aid donations.
 
 ## Methods
-- Clustering (K-Means and Hierarchical)
-- Association Rule Mining
+- [Clustering](https://github.com/nguyen-km/ml-project/tree/main/clustering) (K-Means and Hierarchical)
+- [Association Rule Learning](https://github.com/nguyen-km/ml-project/tree/main/association-rule-learning)
 - Naive Bayes
 - Decision Trees
 - Regression
