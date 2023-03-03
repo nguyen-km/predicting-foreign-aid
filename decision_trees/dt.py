@@ -8,7 +8,6 @@ path ='/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/M
 df = pd.read_csv(path, index_col=2)
 
 X =df.drop('Obligations', axis =1).drop(df.columns[0],axis =1)._get_numeric_data()
-
 y = df['Aid Level']
 # print(X.head())
 
