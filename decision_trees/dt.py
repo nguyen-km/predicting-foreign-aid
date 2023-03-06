@@ -15,12 +15,12 @@ X_train, X_test, y_train, y_test = train_test_split(X,y)
 
 dt = tree.DecisionTreeClassifier()
 
-parameters = {'criterion':['gini', 'entropy', 'log_loss'],
+param_grid = {'criterion':['gini', 'entropy', 'log_loss'],
               'splitter': ['best', 'random'],
               'max_features': [None,'sqrt', 'log2'],
               'class_weight': [None, 'balanced']}
 
-grid = GridSearchCV(dt, parameters)
+grid = GridSearchCV(dt, param_grid)
 grid.fit(X_train, y_train)
 
 print(grid.best_params_) 
@@ -28,6 +28,9 @@ print(grid.best_params_)
 dt.set_params(**grid.best_params_)
 dt.fit(X_train, y_train)
 y_pred = dt.predict(X_test)
+
+
 tree.plot_tree(dt)
+plt.show()
 
 print(confusion_matrix(y_test,y_pred))
