@@ -55,12 +55,12 @@ quant.drop(quant.columns[[3, 7]], axis=1, inplace = True)
 
 # Create new 'Aid Level' column
 def aidLevel(s):
-    if s < quant['Obligations'].quantile(0.33):
+    if s < quant['Obligations'].median():
         return 'Low Aid'
-    elif s > quant['Obligations'].quantile(0.67):
-        return 'High Aid'
+    # elif s > quant['Obligations'].quantile(0.67):
+    #     return 'High Aid'
     else:
-        return 'Medium Aid'
+        return 'High Aid'
 quant['Aid Level'] = quant['Obligations'].apply(aidLevel)
 
 
@@ -78,6 +78,7 @@ sns.catplot(data = quant, x = 'Aid Level', y = 'Obligations', kind = 'box', show
 
 plt.show()
 
+quant.drop('Obligations', axis =1, inplace = True) # remove obligations variable
 
 #Categorical data
 
