@@ -6,9 +6,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 path ='/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project/data/final_clean_data.csv'
-df = pd.read_csv(path, index_col=2)
+df = pd.read_csv(path, index_col=1)
 
-X=StandardScaler().fit_transform(df.drop('Obligations', axis =1).drop(df.columns[0],axis =1)._get_numeric_data()) #scale the numeric data
+X=StandardScaler().fit_transform(df._get_numeric_data()) #scale the numeric data
 y = df['Aid Level']
 
 X_train, X_test, y_train, y_test = train_test_split(X,y)
@@ -28,9 +28,7 @@ print(grid.best_params_)
 dt.set_params(**grid.best_params_)
 dt.fit(X_train, y_train)
 y_pred = dt.predict(X_test)
-
-
 tree.plot_tree(dt)
-plt.show()
 
 print(confusion_matrix(y_test,y_pred))
+plt.savefig('dt.png')
