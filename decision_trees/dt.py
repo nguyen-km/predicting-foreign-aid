@@ -33,22 +33,20 @@ grid.fit(X_train, y_train)
 print(grid.best_params_) # Output optimal parameters
 
 ## fit the model
-dt.set_params(**grid.best_params_)
-dt.fit(X_train, y_train)
-y_pred = dt.predict(X_test)
+y_pred = grid.predict(X_test)
 
 
 ## Plotting
 
 ### Confusion Matrix
-ConfusionMatrixDisplay(confusion_matrix(y_test,y_pred)).plot()
+ConfusionMatrixDisplay(confusion_matrix(y_test,y_pred), display_labels = grid.classes_).plot()
 plt.title('Confusion Matrix for Decision Tree')
 
 ### Tree
 fig = plt.figure(figsize=(25,25))
-_ = tree.plot_tree(dt, 
+_ = tree.plot_tree(grid.best_estimator_, 
                    feature_names=X.columns.values.tolist(),
-                   class_names = dt.classes_,
+                   class_names = grid.classes_,
                    filled=True)
 
 
@@ -68,12 +66,10 @@ grid_rf.fit(X_train, y_train)
 print(grid_rf.best_params_)
 
 # Fit decision tree
-rf.set_params(**grid_rf.best_params_)
-rf.fit(X_train, y_train)
-y_pred_rf = rf.predict(X_test)
+y_pred_rf = grid_rf.predict(X_test)
 
 #plot Confusion Matrix
-ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred_rf)).plot()
+ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred_rf), display_labels = grid_rf.classes_).plot()
 plt.title('Confusion Matrix for Random Forest')
 
 plt.show()
