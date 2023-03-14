@@ -4,9 +4,12 @@ from sklearn.preprocessing import StandardScaler, OrdinalEncoder
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
+import os
+
+os.chdir('/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project')
 
 #Data
-path ='/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project/data/final_clean_data.csv'
+path ='data/final_clean_data.csv'
 df = pd.read_csv(path, index_col=1)
 # print(df.head())
 
@@ -21,6 +24,7 @@ quantNB = GaussianNB().fit(X_train_numeric,y_train)
 y_pred_quant = quantNB.predict(X_test_numeric)
 ConfusionMatrixDisplay(confusion_matrix(y_test,y_pred_quant), display_labels= quantNB.classes_).plot()
 plt.title('Confusion Matrix for Gaussian Naive Bayes')
+plt.savefig('naive_bayes/cm_gaussianNB.png', dpi = 300)
 
 
 #CATEGORICAL NAIVE BAYES for categorical data
@@ -41,5 +45,7 @@ grid.fit(X_train_cat, y_train_cat)
 y_pred_cat= grid.predict(X_test_cat)
 ConfusionMatrixDisplay(confusion_matrix(y_test_cat,y_pred_cat), display_labels = grid.classes_).plot()
 plt.title('Confusion Matrix for Categorical Naive Bayes')
+plt.savefig('naive_bayes/cm_categoricalNB.png', dpi = 300)
 
 plt.show()
+
