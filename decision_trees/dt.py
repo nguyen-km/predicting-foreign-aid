@@ -1,12 +1,15 @@
 from sklearn import tree
 from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
+
+os.chdir('/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project')
 
 # Data Prep
-path ='/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project/data/final_clean_data.csv'
+path ='data/final_clean_data.csv'
 df = pd.read_csv(path, index_col=1)
 print(df.head())
 
@@ -17,10 +20,32 @@ y = df['Aid Level']
 X_train, X_test, y_train, y_test = train_test_split(X,y)
 
 
-# Single decision Tree
+# Single decision Tree (Untuned)
 dt = tree.DecisionTreeClassifier()
+dt.fit(X_train, y_train)
+y_pred = dt.predict(X_test)
 
-## Hyperparameter Tuning
+## Model evaluation
+###accuracy
+print(accuracy_score(y_test, y_pred))
+
+### Confusion Matrix
+ConfusionMatrixDisplay(confusion_matrix(y_test,y_pred), display_labels = dt.classes_).plot()
+plt.title('Confusion Matrix for Decision Tree (without tuning)')
+plt.savefig('decision_trees/imgs/cm.png', dpi = 300)
+
+### Tree
+fig = plt.figure(figsize=(25,25))
+_ = tree.plot_tree(dt, 
+                   feature_names=X.columns.values.tolist(),
+                   class_names = dt.classes_,
+                   filled=True)
+plt.title('Decision Tree without tuning')
+plt.savefig('decision_trees/imgs/dt.png', dpi = 300)
+
+
+## Single Decision Tree (Tuned)
+dt = tree.DecisionTreeClassifier()
 param_grid = {'criterion':['gini', 'entropy', 'log_loss'],
               'splitter': ['best', 'random'],
               'max_features': [None,'sqrt', 'log2'], 
@@ -33,14 +58,15 @@ grid.fit(X_train, y_train)
 print(grid.best_params_) # Output optimal parameters
 
 ## fit the model
-y_pred = grid.predict(X_test)
+y_pred_tuned = grid.predict(X_test)
 
-
-## Plotting
+## Model Evaluation
+print(accuracy_score(y_test, y_pred_tuned))
 
 ### Confusion Matrix
-ConfusionMatrixDisplay(confusion_matrix(y_test,y_pred), display_labels = grid.classes_).plot()
-plt.title('Confusion Matrix for Decision Tree')
+ConfusionMatrixDisplay(confusion_matrix(y_test,y_pred_tuned), display_labels = grid.classes_).plot()
+plt.title('Confusion Matrix for Decision Tree w/ Tuning')
+plt.savefig('decision_trees/imgs/cm_tuned.png', dpi = 200)
 
 ### Tree
 fig = plt.figure(figsize=(25,25))
@@ -48,6 +74,8 @@ _ = tree.plot_tree(grid.best_estimator_,
                    feature_names=X.columns.values.tolist(),
                    class_names = grid.classes_,
                    filled=True)
+plt.title('Decision Tree w/ Hyperparameter Tuning')
+plt.savefig('decision_trees/imgs/dt_tuned.png', dpi = 300)
 
 
 # Random Forrest
@@ -68,8 +96,11 @@ print(grid_rf.best_params_)
 # Fit decision tree
 y_pred_rf = grid_rf.predict(X_test)
 
+print(accuracy_score(y_test, y_pred_rf))
+
 #plot Confusion Matrix
 ConfusionMatrixDisplay(confusion_matrix(y_test, y_pred_rf), display_labels = grid_rf.classes_).plot()
 plt.title('Confusion Matrix for Random Forest')
+plt.savefig('decision_trees/imgs/cm_rf.png', dpi = 300)
 
-plt.show()
+# plt.show()
