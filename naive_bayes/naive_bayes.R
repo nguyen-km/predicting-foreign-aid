@@ -1,5 +1,7 @@
 library(tidyverse)
 
+# Naive Bayes for Mixed Data
+
 setwd('/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project')
 
 df = read_csv('data/final_clean_data.csv')
@@ -17,6 +19,5 @@ print(fit)
 df_test = df[!train, ]
 y_pred <- predict(nb, df_test)
 y_test = df_test$`Aid Level`
-# as.matrix(table(y_pred, df_test$`Aid Level`))
 
 caret::confusionMatrix(factor(y_pred),factor(y_test))
