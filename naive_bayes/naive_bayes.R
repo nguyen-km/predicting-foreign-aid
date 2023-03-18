@@ -1,19 +1,16 @@
 library(tidyverse)
 
-# Naive Bayes for Mixed Data
-
 setwd('/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project')
 
 df = read_csv('data/final_clean_data.csv')
 df= df %>% select(-c(1,2)) # Remove keys (ISO code, Country name)
 
-#Train test split
+# Train test split
 train_n = floor(nrow(df) * 0.75)
 test_n = nrow(df) - train_n
-
 train = sample(c(rep(TRUE, train_n), rep(FALSE, test_n)))
 
-#Naive Bayes for mixed data
+# Naive Bayes for mixed data
 nb = e1071::naiveBayes(`Aid Level` ~ ., laplace = 1, data = df, subset=train)
 print(fit)
 
