@@ -13,11 +13,11 @@ International development involves not only financial aid but also human and soc
 ## Methods
 - [Clustering](https://github.com/nguyen-km/ml-project/tree/main/clustering) (K-Means and Hierarchical)
 - [Association Rule Learning](https://github.com/nguyen-km/ml-project/tree/main/association_rule_learning)
-- Naive Bayes
+- [Naive Bayes](https://github.com/nguyen-km/ml-project/tree/main/naive_bayes)
 - [Decision Trees](https://github.com/nguyen-km/ml-project/tree/main/decision_trees)
 - Regression
 - Support Vector Machines
-- Artificial Neural Networks
+- [Artificial Neural Networks](https://github.com/nguyen-km/ml-project/tree/main/neural_networks)
 
 ## Guiding Questions
 - Can Machine Learning predict how donor countries allocate foreign aid?
