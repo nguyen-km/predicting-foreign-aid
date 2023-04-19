@@ -1,53 +1,62 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score
 import os 
 
+np.seterr(all = 'ignore') #ignore warnings
+
+#convert 2D arrays to a list for evaluation
+def convert_list(y_preds, y):
+    y_pred_list = list()
+    y_test_list = list()
+    for i in range(len(y_preds)):
+        y_pred_list.append(np.argmax(y_preds[i]))
+        y_test_list.append(np.argmax(y[i]))
+    return y_pred_list, y_test_list
+
+# return accuracy
+def get_accuracy(y_preds, y):
+    a,b = convert_list(y_preds, y)
+    return accuracy_score(a,b)
+    
+
 class NeuralNetwork:
-    def __init__(self, hidden_units=2, features=3, outputs = 1, activation="sigmoid", reinit = False):
+    def __init__(self, hidden_units=3, features=6, outputs = 1, activation="sigmoid"):
         #randomly initialize weights and bias
         self.__outputs = outputs
         self.W1 = np.random.randn(features,hidden_units) # first weight matrix, ncols x hidden units
         self.b = np.random.randn(hidden_units) # bias vector, hidden units x 1
-        self.W2 = np.random.randn(hidden_units,self.__outputs) # second weight matrix, hidden units x 1
+        self.W2 = np.random.randn(hidden_units,self.__outputs) # second weight matrix, hidden units x o
         self.__hidden_units = hidden_units
         self.H = None
         self.c = np.random.randn(self.__outputs)
         self.__Z = None
         self.__Z2 = None
         self.__activation = activation.strip().lower()
-        self.y_hat = None
-        self.avgLoss = []
-        self.totLoss = []
+        self.accuracy = []
+        self.loss = []
     # activation functions
-    def activation(self, z, deriv = False, softmax = False, activation = 'sigmoid', alpha = 0.01):
+    def activation(self, z, deriv = False, softmax = False, activation = 'sigmoid', alpha = 0.3):
         if (softmax):
-            exp = np.exp(z)
-            return(exp/np.sum(exp, axis=1)[:,None])
+            a = np.exp(z)
+            return(a/np.sum(a, axis=1)[:,None])
         elif (activation == "sigmoid"):
-            return 1 / (1+np.exp(-z)) if (deriv==False) else np.multiply(z,1-z) 
+            return 1 / (1+np.exp(-z)) if deriv==False else np.multiply(z,1-z) 
         elif (activation == "relu"): # Leaky ReLU
-            if (deriv == False):
-                val = np.maximum(alpha*z, z)
-            else:
-                def reluDeriv(x): 
-                    return 1 if(x > 0) else alpha
-                func_vec = np.vectorize(lambda t: reluDeriv(t)) #Vectorize the derivative of reLU
-                val = func_vec(z)
-            return val
+            return np.where(z>0,z,z*alpha) if deriv == False else np.where(z > 0, 1, alpha)
             
-    def fit(self, X, y, eta = 0.1, epochs=1000):
-
-        for i in range(epochs):
+    def fit(self, X, y, eta = 0.01, epochs=1000):
+        for i in range(epochs): #iterate over number of specified epochs
             self.y_hat = self.predict(X)
-            error = self.y_hat - y # n x o (y^-y)
+            error = self.y_hat - y # n x o (y_hat-y)
 
             #calculate loss categorical cross entropy
             loss = np.mean(-y * np.log(self.y_hat)) ## We need y to place the "1" in the right place
-            # print("The current average loss is\n", loss)
-            self.avgLoss.append(loss)
-            self.totLoss.append(loss)
+            self.loss.append(loss)
+            self.accuracy.append(get_accuracy(self.y_hat, y))
 
             d_error = error # n x o derivative for categorical cross entropy and softmax
             H_deriv = self.activation(self.H, deriv=True, activation = self.__activation) # n x h (Activation'(H))
@@ -75,30 +84,44 @@ class NeuralNetwork:
 
 os.chdir('/Users/kevnguyen/Library/CloudStorage/GoogleDrive-keng2413@colorado.edu/My Drive/CSCI5622/project')
 df = pd.read_csv('data/final_clean_data.csv')
-print(df.head())
+# print(df.head())
 X = StandardScaler().fit_transform(df._get_numeric_data())
-print(X[0:5])
+# print(X[0:5])
 
-y = OneHotEncoder().fit_transform(df['Aid Level'].values.reshape(-1,1)).toarray()
+y = OneHotEncoder().fit_transform(df['Aid Level'].values.reshape(-1,1)).toarray() #convert to a 2D array with binary labels
 # print(y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
-nn= NeuralNetwork(hidden_units = 10, features = X_train.shape[1], outputs=y_train.shape[1], activation = 'relu')
+
+nn= NeuralNetwork(hidden_units = 3, 
+                  features = X_train.shape[1], 
+                  outputs=y_train.shape[1], 
+                  activation = 'relu')
 nn.fit(X_train, y_train, eta = 0.01, epochs = 3000)
-y_pred_probs = nn.predict(X_test)
-# print(y_pred_probs)
+y_pred_probs = nn.predict(X_test) #probability of each class 2D array
 
-y_pred_list = list()
-y_test_list = list()
-for i in range(len(y_pred_probs)):
-    y_pred_list.append(np.argmax(y_pred_probs[i]))
-    y_test_list.append(np.argmax(y_test[i]))
+#Loss Plot
+plt.plot(nn.loss)
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.title('Model Loss at each epoch')
+plt.savefig('neural_networks/loss.png', dpi = 300)
+plt.show()
+
+#Accuracy Plot
+plt.plot(nn.accuracy, color = 'orange')
+plt.xlabel("Epochs")
+plt.ylabel("Accuracy")
+plt.title('Model accuracy at each epoch')
+plt.savefig('neural_networks/accuracy.png', dpi = 300)
+plt.show()
 
 
-print('Truth', y_test_list)
-print('Preds', y_pred_list)
+y_pred_list, y_test_list = convert_list(y_pred_probs, y_test)
 
-from sklearn.metrics import accuracy_score
-a =accuracy_score(y_pred_list,y_test_list)
+ConfusionMatrixDisplay(confusion_matrix(y_pred_list, y_test_list)).plot()
+plt.title('Neural Network Confusion Matrix')
+plt.savefig('neural_networks/cm_nn.png', dpi = 300)
+a = get_accuracy(y_pred_probs, y_test)
 print('Accuracy is:', round(a*100, 2), '%')
