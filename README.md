@@ -9,8 +9,8 @@ Project website: https://nguyenkm.com/projects/machine-learning/
 - [Association Rule Learning](https://github.com/nguyen-km/ml-project/tree/main/association_rule_learning)
 - [Naive Bayes](https://github.com/nguyen-km/ml-project/tree/main/naive_bayes)
 - [Decision Trees](https://github.com/nguyen-km/ml-project/tree/main/decision_trees)
-- Regression
-- Support Vector Machines
+- [Regression](https://github.com/nguyen-km/ml-project/tree/main/linear_regression)
+- [Support Vector Machines]((https://github.com/nguyen-km/ml-project/tree/main/svm)
 - [Artificial Neural Networks](https://github.com/nguyen-km/ml-project/tree/main/neural_networks)
 
 ## Guiding Questions
