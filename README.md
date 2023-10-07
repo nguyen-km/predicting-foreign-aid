@@ -12,7 +12,7 @@ Project website: https://nguyenkm.com/projects/machine-learning/
 - [Regression](https://github.com/nguyen-km/ml-project/tree/main/linear_regression)
 - [Support Vector Machines](https://github.com/nguyen-km/ml-project/tree/main/svm)
 - [Artificial Neural Networks](https://github.com/nguyen-km/ml-project/tree/main/neural_networks)
-- [Bayesian Statistics](https://github.com/nguyen-km/ml-project/tree/main/bayesian_statistics)
+- [Bayesian Regression](https://github.com/nguyen-km/ml-project/tree/main/bayesian_statistics)
 
 ## Guiding Questions
 - Can Machine Learning predict how donor countries allocate foreign aid?
